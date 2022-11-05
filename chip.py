@@ -11,6 +11,7 @@ def start(input_csv_path):
     try:
         with open(os.path.relpath(input_csv_path), "r", encoding="utf-8") as input_csv:
             csvreader = csv.DictReader(input_csv)
+            # Create an output csv file with the input csv header and new header 'Hash'
             with open("./output.csv", "w", encoding="utf-8") as output_csv:
                 output_writer = csv.DictWriter(
                     output_csv, fieldnames=[*csvreader.fieldnames, "Hash"]
@@ -54,16 +55,19 @@ def start(input_csv_path):
                         },
                     }
 
+                    # Create outputs directory if it doesn't exist.
+                    # Outputs directory stores our json files.
                     Path("./outputs").mkdir(parents=True, exist_ok=True)
                     json_path = f"./outputs/{row['Name']}.json"
                     with open(json_path, "w", encoding="utf-8") as json_output:
                         json_output.write(json.dumps(data))
 
                     json_file_hash = sha256(open(json_path, "rb").read()).hexdigest()
+                    # Add hash field to row and save row to the output csv
                     row.setdefault("Hash", json_file_hash)
                     output_writer.writerow(row)
     except FileNotFoundError:
-        print("File not found.")
+        print("Wrong csv file provided, please check the file path provided again.")
 
 
 if __name__ == "__main__":
