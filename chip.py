@@ -27,7 +27,6 @@ def start(input_csv_path):
                                 "value": attribute.split(":")[1].strip(),
                             }
                             normalized_attributes.append(attribute_dict)
-                    print(normalized_attributes)
                     data = {
                         "format": "CHIP-0007",
                         "name": row["Name"],
