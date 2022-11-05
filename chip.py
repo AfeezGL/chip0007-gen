@@ -66,6 +66,7 @@ def start(input_csv_path):
                     # Add hash field to row and save row to the output csv
                     row.setdefault("Hash", json_file_hash)
                     output_writer.writerow(row)
+        print("Success, check output.csv file in the current directory for results.")
     except FileNotFoundError:
         print("Wrong csv file provided, please check the file path provided again.")
 
