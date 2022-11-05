@@ -17,6 +17,17 @@ def start(input_csv_path):
                 )
                 output_writer.writeheader()
                 for row in csvreader:
+                    # turn attributes into an list
+                    attributes = row["Attributes"].split(";")
+                    normalized_attributes = []
+                    for attribute in attributes:
+                        if len(attribute.split(":")) == 2:
+                            attribute_dict = {
+                                "trait_type": attribute.split(":")[0].strip(),
+                                "value": attribute.split(":")[1].strip(),
+                            }
+                            normalized_attributes.append(attribute_dict)
+                    print(normalized_attributes)
                     data = {
                         "format": "CHIP-0007",
                         "name": row["Name"],
@@ -29,7 +40,8 @@ def start(input_csv_path):
                             {
                                 "trait_type": "gender",
                                 "value": row["Gender"],
-                            }
+                            },
+                            *normalized_attributes,
                         ],
                         "collection": {
                             "name": "Zuri NFT Tickets for Free Lunch",
